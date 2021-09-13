@@ -11,21 +11,19 @@ const Form = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    dispatch(addTodo({ id: nanoid(10), title: title, compelted: false }));
+    dispatch(addTodo({ id: nanoid(10), title , completed: false }));
 
     setTitle("");
   };
 
-  const handleChange = (e) => {
-    setTitle(e.target.value);
-  };
+
 
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <input
           value={title}
-          onChange={handleChange}
+          onChange={(e) => setTitle(e.target.value)}
           className="new-todo"
           placeholder="What needs to be done?"
           autoFocus

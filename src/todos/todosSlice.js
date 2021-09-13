@@ -1,43 +1,44 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
 
 export const todosSlice = createSlice({
-    name: "todos",
-    initialState: {
-        items: [
-            {
-            id: "1",
-            title: 'learn React',
-            completed: true
-        },
-        {
-            id:"2",
-            title:'read a book',
-            completed: false
-
-        }
-    
+  name: "todos",
+  initialState: {
+    items: [
     
     ],
+    activeFilter: 'all',
+  },
+
+  reducers: {
+    addTodo: (state, action) => {
+        state.items.push(action.payload); //state icerisindeki items a action payload ile belirlenen verileri push la
     },
 
-    reducers: {
+    toggle: (state, action) => {
+      const { id } = action.payload; //toggle(isaretleme) icin tiklananin idsini al
 
-        addTodo: (state, action) => {
-            state.items.push(action.payload); //state icerisindeki items a action payload ile belirlenen verileri push la
-        },
+      const item = state.items.find((item) => item.id === id); //tiklanan degerli id yi bulup almak icin
 
-        toggle: (state, action) => {
-            const {id} = action.payload //toggle(isaretleme) icin tiklananin idsini al
+      item.completed = !item.completed;
+    },
+    destroy: (state, action) => {
+      const id = action.payload;
+      const filtered = state.items.filter(item => item.id !== id);
 
-            const item = state.items.find(item => item.id === id) //tiklanan degerli id yi bulup almak icin
-
-            item.completed = !item.completed;
-        }
-
+      state.items = filtered;
     },
 
+    changeActiveFilter: (state, action) => {
+      state.activeFilter = action.payload;
+    },
+
+    clearCompleted: (state, action) => { 
+      const filterCompleted = state.items.filter((item )=> item.completed === false);
+      state.items = filterCompleted;
+
+    }
+  },
 });
-export const {addTodo, toggle} = todosSlice.actions;
+export const { addTodo, toggle, destroy, changeActiveFilter, clearCompleted } = todosSlice.actions;
 
 export default todosSlice.reducer;
